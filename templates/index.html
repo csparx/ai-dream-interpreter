@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Interpreter</title>
+</head>
+<body>
+    <h1>AI Dream Interpreter</h1>
+    <textarea id="dreamInput" rows="4" cols="50" placeholder="Type your dream here..."></textarea><br>
+    <button onclick="interpretDream()">Interpret</button>
+    <h2>Interpretation:</h2>
+    <p id="interpretation"></p>
+
+    <script>
+        async function interpretDream() {
+            const dreamText = document.getElementById('dreamInput').value;
+            if (!dreamText) {
+                alert("Please enter a dream!");
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:5000/interpret', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ dream: dreamText }),
+            });
+
+            const result = await response.json();
+            document.getElementById('interpretation').innerText = result.interpretation || 'No interpretation generated.';
+        }
+    </script>
+</body>
+</html>
