@@ -23,13 +23,14 @@ def home():
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
+        <div class="container">
         <h1>AI Dream Interpreter</h1>
         <p>Ever wake up from a dream and wonder what it meant?
 Enter the details of your dream below, and our AI will help interpret the symbols, themes, and emotions that may be hiding beneath the surface.</p>
         <textarea id="dreamInput" rows="4" cols="50" placeholder="Type your dream here..."></textarea><br>
         <button onclick="interpretDream()">Interpret</button>
-        <h2>Interpretation:</h2>
-        <p id="interpretation"></p>
+        <h2 id="interpretation-title" style="display:none;">Interpretation:</h2>
+        <p id="interpretation" style="display:none;"></p>
 
         <script>
             async function interpretDream() {
@@ -38,6 +39,10 @@ Enter the details of your dream below, and our AI will help interpret the symbol
                     alert("Please enter a dream!");
                     return;
                 }
+
+                // Hide interpretation before submitting
+                document.getElementById('interpretation-title').style.display = 'none';
+                document.getElementById('interpretation').style.display = 'none';
 
                 const response = await fetch('/interpret', {
                     method: 'POST',
@@ -49,8 +54,11 @@ Enter the details of your dream below, and our AI will help interpret the symbol
 
                 const result = await response.json();
                 document.getElementById('interpretation').innerText = result.interpretation || 'No interpretation generated.';
+                document.getElementById('interpretation-title').style.display = 'block';
+                document.getElementById('interpretation').style.display = 'block';
             }
         </script>
+        </div>
     </body>
     </html>
     """)
